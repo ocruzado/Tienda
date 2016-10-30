@@ -1,0 +1,93 @@
+<div class="container">
+    <h1>Ficha Producto 2</h1>
+
+    <div class="col-lg-6">
+        <form (ngSubmit)="onSubmit()" #ProductoFicha="ngForm">
+
+
+            <div class="form-group">
+
+                <label for="Prod_Nombre">Nombre</label>
+
+                <input type="text" class="form-control" id="Prod_Nombre" name="Prod_Nombre" #Prod_Nombre="ngModel"
+                       required
+                       [(ngModel)]="producto.prod_Nombre" placeholder="Nombre del Producto">
+
+                <div [hidden]="Prod_Nombre.valid || Prod_Nombre.pristine" class="alert alert-danger">
+                    El Nombre es Necesario
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="prod_Descripcion">Descripcion</label>
+
+                <input type="text" class="form-control" id="prod_Descripcion" name="prod_Descripcion"
+                       #prod_Descripcion="ngModel" required
+                       [(ngModel)]="producto.prod_Descripcion" placeholder="Breve Descripcion del Producto">
+
+                <div [hidden]="prod_Descripcion.valid || prod_Descripcion.pristine" class="alert alert-danger">
+                    El Descripciòn es Necesaria
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="prod_Precio">Precio</label>
+
+                <input type="number" class="form-control" id="prod_Precio" name="prod_Precio" #prod_Precio="ngModel"
+                       [(ngModel)]="producto.prod_Precio" required>
+
+                <div [hidden]="prod_Precio.valid || prod_Precio.pristine" class="alert alert-danger">
+                    El Precio es Necesario
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-default" [disabled]="!ProductoFicha.form.valid">Submit</button>
+            <button type="button" class="btn btn-default" (click)="limpiar()">Limpiar</button>
+
+        </form>
+    </div>
+    <div class="col-lg-6">
+        <h2>Producto</h2>
+        <div class="row">
+            <div class="col-xs-3">Nombre :</div>
+            <div class="col-xs-9  pull-left">{{ producto.prod_Nombre }}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">Descripcion:</div>
+            <div class="col-xs-9 pull-left">{{ producto.prod_Descripcion}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">Precio:</div>
+            <div class="col-xs-9 pull-left">{{ producto.prod_Precio}}</div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-12">
+        <ul class="pagination">
+            <li [ngClass]="{disabled:PageSize === 1}">
+                <a (click)="setPage(1)">First</a>
+            </li>
+            <li [ngClass]="{disabled:PageSize === 1}">
+                <a (click)="setPage(PageNumber - 1)">Previous</a>
+            </li>
+            <li *ngFor="let item of Paginas" [ngClass]="{active:PageNumber === item}">
+                <a (click)="setPage(item)">{{item}}</a>
+            </li>
+            <li [ngClass]="{disabled:PageNumber === TotalPages}">
+                <a (click)="setPage(PageNumber + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:PageNumber === TotalPages}">
+                <a (click)="setPage(TotalPages)">Last</a>
+            </li>
+        </ul>
+
+        <ul *ngFor="let item of Page">
+
+            <li>{{item.prod_Nombre}} - {{item.prod_Descripcion}}</li>
+
+        </ul>
+    </div>
+</div>

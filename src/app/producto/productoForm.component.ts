@@ -27,7 +27,6 @@ export class ProductoFormComponent implements OnInit {
 
     constructor(private productoservice: ProductoService,
                 private categoriaservice: CategoriaService) {
-
     }
 
     onSubmit(): void {
@@ -119,6 +118,7 @@ export class ProductoFormComponent implements OnInit {
         this.Page = this.productos.slice(((this.PageNumber - 1) * this.PageSize), (this.PageNumber * this.PageSize));
 
     }
+
 
 
 }

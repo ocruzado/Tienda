@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http, RequestOptions, URLSearchParams}from '@angular/http';
-
+import {environment} from '../../environments/environment';
 //Generic
 import {G_Lista}from '../generic/g_lista';
 
@@ -12,7 +12,7 @@ import {Observable} from "rxjs";
 export class ProductoService {
     private headers = new Headers({'Content-Type': 'application/json'});
 
-    private Url = 'http://localhost:8000/producto';  // URL to web api
+    private Url = environment.Base_Url_Service + '/producto';  // URL to web api
 
     constructor(private http: Http) {
 
@@ -25,9 +25,27 @@ export class ProductoService {
         params.set('categoria', categoria);
 
         return this.http.get(this.Url, {search: params})
-            .map(r=>  r.json())
+            .map(r=> r.json())
             .catch(this.handleError);
 
+    }
+
+    editar_estado(id: number, estado: number, usuario: string): Observable<string> {
+
+        let data = {
+            id: id,
+            estado: estado,
+            usuario: usuario
+        }
+
+        let body = JSON.stringify(data);
+        let options = new RequestOptions({headers: this.headers});
+
+        var respuesta = this.http.post(this.Url + '/editar_estado', body, options)
+            .map(r=> r.text())
+            .catch(this.handleError);
+
+        return respuesta;
     }
 
     addProducto(producto: Producto): Observable<string> {

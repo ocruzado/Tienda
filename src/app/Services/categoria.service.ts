@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http}from '@angular/http';
+import {environment} from '../../environments/environment';
 
 import {Categoria} from '../model/categoria';
 
@@ -9,7 +10,7 @@ import {Observable} from "rxjs";
 export class CategoriaService {
     private headers = new Headers({'Content-Type': 'application/json'});
 
-    private Url = 'http://localhost:8000/categoria';  // URL to web api
+    private Url = environment.Base_Url_Service + '/categoria';  // URL to web api
 
     constructor(private http: Http) {
 

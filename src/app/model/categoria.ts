@@ -11,6 +11,7 @@ export class Categoria {
     prod_FechaModificacion: string;
 
     constructor() {
+        this.cate_IdCategoria=0;
         this.cate_Nombre = "";
         this.cate_Descripcion = "";
     }

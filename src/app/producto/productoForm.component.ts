@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 // import {Router} from '@angular/router';
 
-
 //Model
 import {Categoria}from '../model/categoria';
 import {Producto}from '../model/producto';
@@ -38,9 +37,9 @@ export class ProductoFormComponent implements OnInit {
         this.producto = new Producto();
     }
 
-    public PageSize: number = 5;
+    public PageSize: number = 10;
     public PageNumber: number = 1;
-    public TotalItems: number = 200;
+    public TotalItems: number = 0;
 
     public Paginas: number[] = [];
 
@@ -50,7 +49,35 @@ export class ProductoFormComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.productoservice.getProductos('%', '0')
+        this.listar();
+
+        this.categoriaservice.getCategorias()
+            .subscribe(r=> {
+                this.categorias = r;
+            });
+
+    }
+
+    setPage(PageNumber: number): void {
+
+        if (PageNumber < 1 || PageNumber > this.TotalPages) {
+            return;
+        }
+
+        this.PageNumber = PageNumber;
+
+        this.Page = this.productos.slice(((this.PageNumber - 1) * this.PageSize), (this.PageNumber * this.PageSize));
+
+    }
+
+    listar(): void {
+        this.Paginas = [];
+        this.Page = [];
+
+        this.productos = [];
+        this.TotalItems = 0;
+
+        this.productoservice.getProductos(this.filt_descripcion, this.filt_categoria.cate_IdCategoria.toString())
             .subscribe(r=> {
                 this.productos = r.items;
                 this.TotalItems = r.total;
@@ -61,64 +88,25 @@ export class ProductoFormComponent implements OnInit {
 
                 this.setPage(1);
             });
+    }
 
-        this.categoriaservice.getCategorias()
-            .subscribe(r=> {
-                this.categorias = r;
-            });
+    editar(id: number): void {
 
-
-
-        /* for (var i = 1; i <= this.TotalPages; i++) {
-         this.Paginas.push(i);
-         }
-
-         for (var i = 1; i <= 200; i++) {
-         let p: Producto = new Producto();
-
-         p.prod_IdProducto = i;
-         p.prod_Nombre = 'Nombre Producto ' + i;
-         p.prod_Descripcion = 'Descripcion Producto ' + i;
-         p.prod_Precio = i;
-
-         this.productos.push(p);
-         }
-
-         for (var i = 1; i <= 10; i++) {
-         let c: Categoria = new Categoria();
-
-         c.cate_IdCategoria = i;
-         c.cate_Nombre = 'Nombre Categoria ' + i;
-         c.cate_Descripcion = 'Descripcion Categoria ' + i;
-
-         this.categorias.push(c);
-         }
-
-         this.setPage(2);*/
-
+        this.producto = this.Page[id];
 
     }
 
-    setPage(PageNumber: number): void {
+    editar_estado(id: number, estado: number): void {
 
+        let usuario = 'usuario';
 
-        if (PageNumber < 1 || PageNumber > this.TotalPages) {
-            return;
-        }
+        this.productoservice.editar_estado(id, estado, usuario).subscribe(
+            r=>
+                this.listar()
+        );
 
-        this.PageNumber = PageNumber;
-
-
-        // get pager object from service
-        //this.pager = this.pagerService.getPager(this.dummyItems.length, page);
-
-        // get current page of items
-
-
-        this.Page = this.productos.slice(((this.PageNumber - 1) * this.PageSize), (this.PageNumber * this.PageSize));
 
     }
-
 
 
 }

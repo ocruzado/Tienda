@@ -41,11 +41,11 @@ export class ProductoService {
         let body = JSON.stringify(data);
         let options = new RequestOptions({headers: this.headers});
 
-        var respuesta = this.http.post(this.Url + '/editar_estado', body, options)
+        return this.http.post(this.Url + '/editar_estado', body, options)
             .map(r=> r.text())
             .catch(this.handleError);
 
-        return respuesta;
+        //return respuesta;
     }
 
     addProducto(producto: Producto): Observable<string> {

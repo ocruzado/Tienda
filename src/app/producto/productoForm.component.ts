@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-// import {Router} from '@angular/router';
+
 
 //Model
 import {Categoria}from '../model/categoria';
@@ -9,12 +9,19 @@ import {Producto}from '../model/producto';
 import {ProductoService} from "../Services/producto.service";
 import {CategoriaService} from "../Services/categoria.service";
 
+// TinyMCE
+//import {SimpleTinyComponent} from '../TinyMCE.component';
+
 @Component({
     selector: 'Producto-Form',
-    templateUrl: './productoForm.component.html'
+    templateUrl: './productoForm.component.html'//,
+
+    //directives: [SimpleTinyComponent]
 })
 
 export class ProductoFormComponent implements OnInit {
+
+    public htmlcontent: string = "fffff";
 
     public filt_descripcion: string = "";
     public filt_categoria: Categoria = new Categoria();
@@ -56,6 +63,9 @@ export class ProductoFormComponent implements OnInit {
                 this.categorias = r;
             });
 
+    }
+    getHtmlContent(e):void{
+        this.htmlcontent = e;
     }
 
     setPage(PageNumber: number): void {

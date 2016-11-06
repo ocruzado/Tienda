@@ -65,6 +65,11 @@
             </div>
         </div>
     </div>
+
+    <simple-tiny [elementId]="'my-editor-id'" (onEditorKeyup)="getHtmlContent($event)"></simple-tiny>
+
+
+    <p>{{htmlcontent}}</p>
     <h3>Listado de Productos</h3>
 
     <div class="col-lg-12">

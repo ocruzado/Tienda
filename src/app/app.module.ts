@@ -7,6 +7,7 @@ import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {ProductoFormComponent} from './producto/productoForm.component';
 import {DashBoardComponent} from "./dashboard.component";
+import {ProductoComponent} from "./producto.component";
 
 // TinyMCE
 import {SimpleTinyComponent} from './TinyMCE.component';
@@ -16,12 +17,14 @@ import {ProductoService} from './Services/producto.service';
 import {CategoriaService} from "./Services/categoria.service";
 
 import {routing} from './app.routing';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
         AppComponent,
-        ProductoFormComponent,
+        //ProductoFormComponent,
         DashBoardComponent,
+        ProductoComponent,
 
         SimpleTinyComponent
     ],
@@ -29,7 +32,9 @@ import {routing} from './app.routing';
         BrowserModule,
         FormsModule,
         HttpModule,
-        routing
+        routing,
+
+        NgbModule.forRoot()
     ],
     providers: [
         ProductoService,

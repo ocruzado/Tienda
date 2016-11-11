@@ -98,8 +98,8 @@
             <div class="form-group">
                 <label for="exampleInputFile">File input</label>
                 <input type="file" class="form-control-file" id="exampleInputFile" (change)="fileChangeEvent($event)" aria-describedby="fileHelp">
-                <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
-                <button type="button" cli(ck)="upload()">Upload</button>
+                <!--<small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>-->
+                <button type="button" (click)="upload()">Upload</button>
             </div>
             <br/>
             <ul class="list-inline text-xs-center">

@@ -64,7 +64,8 @@ export class ProductoFormComponent implements OnInit {
             });
 
     }
-    getHtmlContent(e):void{
+
+    getHtmlContent(e): void {
         this.htmlcontent = e;
     }
 
@@ -101,21 +102,15 @@ export class ProductoFormComponent implements OnInit {
     }
 
     editar(id: number): void {
-
         this.producto = this.Page[id];
-
     }
 
     editar_estado(id: number, estado: number): void {
-
         let usuario = 'usuario';
 
-        this.productoservice.editar_estado(id, estado, usuario).subscribe(
-            r=>
-                this.listar()
-        );
-
-
+        this.productoservice
+            .editar_estado(id, estado, usuario)
+            .subscribe(r=>this.listar());
     }
 
 

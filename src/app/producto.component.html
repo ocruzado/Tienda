@@ -8,49 +8,50 @@
             <div class="form-group">
                 <label for="Prod_Nombre">Nombre: </label>
 
-                <input type="text" class="form-control" id="Prod_Nombre" placeholder="Nombre del Producto">
-
+                <input #Prod_Nombre id="Prod_Nombre" [(ngModel)]="producto.prod_Nombre" type="text" class="form-control"
+                       placeholder="Nombre del Producto">
             </div>
 
             <div class="form-group">
-
                 <label for="prod_Descripcion">Descripcion: </label>
 
-                <textarea class="form-control" name="prod_Descripcion" id="prod_Descripcion"
-                          rows="3"></textarea>
-
+                <textarea #prod_Descripcion id="prod_Descripcion" [(ngModel)]="producto.prod_Descripcion"
+                          class="form-control" placeholder="Descripcion del Producto" rows="3"></textarea>
             </div>
 
             <div class="form-group">
-
                 <label for="prod_Precio">Precio: </label>
 
-                <input type="number" class="form-control" id="prod_Precio">
-
+                <input #prod_Precio id="prod_Precio" [(ngModel)]="producto.prod_Precio" type="number"
+                       class="form-control" placeholder="0.00">
             </div>
+
             <div class="form-group">
                 <label for="prod_categoria">Categoria:</label>
-                <select id="prod_categoria" class="form-control">
-
+                <select #prod_categoria id="prod_categoria" [(ngModel)]="producto.cate_IdCategoria"
+                        class="form-control">
                     <option value="0">--seleccione--</option>
                     <option value="1">Categoria 01</option>
                     <option value="2">Categoria 02</option>
                     <option value="3">Categoria 03</option>
                 </select>
             </div>
-            <div class="form-group">
 
+            <div class="form-group">
                 <label for="prod_Tag">Tag's: </label>
 
-                <input type="text" class="form-control" id="prod_Tag">
+                <input #prod_Tag id="prod_Tag" type="text" class="form-control"
+                       (keyup.enter)="AgregarTag(prod_Tag.value); prod_Tag.value='';">
 
                 <div>
-                    <span class="tag tag-default">Default
-                                    <a>
+                    <span class="tag tag-default" *ngFor="let t of tags; let i=index;">
+                        {{t.tag}}
+                        <a (click)="EliminarTag(t.id)">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                     </span>
-                    <span class="tag tag-default">Default
+
+                    <!--<span class="tag tag-default">Default
                          <a>
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
@@ -69,24 +70,36 @@
                         <a>
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
-                    </span>
+                    </span>-->
                 </div>
-
-            </div>
-            <div class="form-group">
-                <label for="prod_Estado">Estado:</label>
-                <a>
-                    <span class="glyphicon glyphicon-unchecked" aria-hidden="true" id="prod_Estado"></span>
-                </a>
             </div>
 
-            <button type="submit" class="btn btn-primary" id="btnGuardar">Submit</button>
-            <button type="button" class="btn btn-secondary" id="btnLimpiar">Limpiar</button>
+            <div class="form-group row">
+                <label for="FlagActivo" class="col-sm-2">Estado: </label>
+
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input #FlagActivo id="FlagActivo" [(ngModel)]="producto.FlagActivo"
+                                   type="checkbox" class="form-check-input">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <button id="btnGuardar" type="submit" class="btn btn-primary">Submit</button>
+            <button id="btnLimpiar" type="button" class="btn btn-secondary">Limpiar</button>
         </div>
         <div class="col-lg-6">
 
             <div class="text-xs-center">
                 <img src="https://dummyimage.com/300" class="rounded" alt="Imagen PRINCIPAL">
+            </div>
+            <br/>
+            <div class="form-group">
+                <label for="exampleInputFile">File input</label>
+                <input type="file" class="form-control-file" id="exampleInputFile" (change)="fileChangeEvent($event)" aria-describedby="fileHelp">
+                <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+                <button type="button" cli(ck)="upload()">Upload</button>
             </div>
             <br/>
             <ul class="list-inline text-xs-center">
@@ -108,8 +121,6 @@
                 <li class="list-inline-item">
                     <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
                 </li>
-
-
             </ul>
             <!--
                         <ngb-carousel>

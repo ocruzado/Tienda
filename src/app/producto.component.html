@@ -1,410 +1,251 @@
 <div class="container">
     <h2>Producto</h2>
 
-    <div class="row">
-        <div class="col-lg-6">
+
+    <ngb-tabset #tab_Master="ngbTabset">
+        <ngb-tab title="Datos Básicos" id="tab_Listado">
+            <template ngbTabContent>
+
+                <div class="row">
+                    <div class="col-lg-4">
+
+                        <div class="form-group">
+                            <label for="Prod_Nombre">Nombre: </label>
+
+                            <input #Prod_Nombre id="Prod_Nombre" [(ngModel)]="producto.prod_Nombre" type="text"
+                                   class="form-control"
+                                   placeholder="Nombre del Producto">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prod_Descripcion">Descripcion: </label>
+
+                            <textarea #prod_Descripcion id="prod_Descripcion" [(ngModel)]="producto.prod_Descripcion"
+                                      class="form-control" placeholder="Descripcion del Producto" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prod_Precio">Precio: </label>
+
+                            <input #prod_Precio id="prod_Precio" [(ngModel)]="producto.prod_Precio" type="number"
+                                   class="form-control" placeholder="0.00">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cate_IdCategoria">Categoria:</label>
+                            <select #cate_IdCategoria id="cate_IdCategoria" [(ngModel)]="producto.cate_IdCategoria"
+                                    class="form-control">
+                                <option *ngFor="let categoria of categorias" [ngValue]="categoria.Id">
+                                    {{categoria.Descripcion}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prod_Tag">Tag's: </label>
+
+                            <input #prod_Tag id="prod_Tag" type="text" class="form-control"
+                                   (keyup.enter)="AgregarTag(prod_Tag.value); prod_Tag.value='';">
+
+                            <div>
+                                <span class="tag tag-default" *ngFor="let t of tags; let i=index;">
+                                    {{t.tag}}
+                                    <a (click)="EliminarTag(t.id)">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="FlagActivo" class="col-sm-2">Estado: </label>
+
+                            <div class="col-sm-10">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input #FlagActivo id="FlagActivo" [(ngModel)]="producto.FlagActivo"
+                                               type="checkbox" class="form-check-input">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="btnGuardar" type="submit" class="btn btn-primary" (click)="registro()">Registrar
+                        </button>
+                        <button id="btnLimpiar" type="button" class="btn btn-secondary" (click)="limpiar()">Limpiar
+                        </button>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <h3>Listado de Productos</h3>
 
 
-            <div class="form-group">
-                <label for="Prod_Nombre">Nombre: </label>
+                        <div class="form-group row">
 
-                <input #Prod_Nombre id="Prod_Nombre" [(ngModel)]="producto.prod_Nombre" type="text" class="form-control"
-                       placeholder="Nombre del Producto">
-            </div>
+                            <label for="filt_descripcion" class="col-lg-1">Buscar: </label>
 
-            <div class="form-group">
-                <label for="prod_Descripcion">Descripcion: </label>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control" id="filt_descripcion" name="filt_descripcion"
+                                       [(ngModel)]="filt_descripcion">
+                            </div>
 
-                <textarea #prod_Descripcion id="prod_Descripcion" [(ngModel)]="producto.prod_Descripcion"
-                          class="form-control" placeholder="Descripcion del Producto" rows="3"></textarea>
-            </div>
+                            <label for="filt_categoria" class="col-lg-2">Categoria: </label>
 
-            <div class="form-group">
-                <label for="prod_Precio">Precio: </label>
+                            <div class="col-lg-4">
+                                <select id="filt_categoria" class="form-control" [(ngModel)]="filt_categoria">
+                                    <option *ngFor="let categoria of categorias" [ngValue]="categoria">
+                                        {{categoria.Descripcion}}
+                                    </option>
+                                </select>
+                            </div>
 
-                <input #prod_Precio id="prod_Precio" [(ngModel)]="producto.prod_Precio" type="number"
-                       class="form-control" placeholder="0.00">
-            </div>
+                            <div class="col-lg-1">
+                                <button type="button" class="btn btn-primary" id="btnBuscar" (click)="setPage(1)">
+                                    Buscar
+                                </button>
+                            </div>
 
-            <div class="form-group">
-                <label for="prod_categoria">Categoria:</label>
-                <select #prod_categoria id="prod_categoria" [(ngModel)]="producto.cate_IdCategoria"
-                        class="form-control">
-                    <option value="0">--seleccione--</option>
-                    <option value="1">Categoria 01</option>
-                    <option value="2">Categoria 02</option>
-                    <option value="3">Categoria 03</option>
-                </select>
-            </div>
+                        </div>
 
-            <div class="form-group">
-                <label for="prod_Tag">Tag's: </label>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th width="5%">#</th>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th width="10%">Opciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                <input #prod_Tag id="prod_Tag" type="text" class="form-control"
-                       (keyup.enter)="AgregarTag(prod_Tag.value); prod_Tag.value='';">
 
-                <div>
-                    <span class="tag tag-default" *ngFor="let t of tags; let i=index;">
-                        {{t.tag}}
-                        <a (click)="EliminarTag(t.id)">
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                        </a>
-                    </span>
+                            <tr *ngFor="let item of List; let i=index">
+                                <td scope="row">{{ (PageNumber - 1) * PageSize + i +1}}</td>
+                                <td>{{item.prod_Codigo}}</td>
+                                <td>{{item.prod_Nombre}}</td>
+                                <td>{{item.prod_Precio}}</td>
+                                <td>
+                                    <a (click)="editar(item.prod_IdProducto)">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                    <a (click)="eliminar(item.prod_IdProducto)">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                                    <a *ngIf="!item.FlagActivo" (click)="editar_estado(item.prod_IdProducto, true)">
+                                        <i class="fa fa-square-o" aria-hidden="true"></i>
+                                    </a>
+                                    <a *ngIf="item.FlagActivo" (click)="editar_estado(item.prod_IdProducto, false)">
+                                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                    </a>
+                                    <a>
+                                        <i class="fa fa-file-code-o" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-                    <!--<span class="tag tag-default">Default
-                         <a>
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                        </a>
-                    </span>
-                    <span class="tag tag-default">Default
-                        <a>
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                        </a>
-                    </span>
-                    <span class="tag tag-default">Default
-                       <a>
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                        </a>
-                    </span>
-                    <span class="tag tag-default">Default
-                        <a>
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                        </a>
-                    </span>-->
-                </div>
-            </div>
+                        <ngb-pagination (pageChange)="setPage($event)" [collectionSize]="TotalItems"
+                                        [(page)]="PageNumber" [(pageSize)]="PageSize"></ngb-pagination>
 
-            <div class="form-group row">
-                <label for="FlagActivo" class="col-sm-2">Estado: </label>
-
-                <div class="col-sm-10">
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input #FlagActivo id="FlagActivo" [(ngModel)]="producto.FlagActivo"
-                                   type="checkbox" class="form-check-input">
-                        </label>
                     </div>
                 </div>
-            </div>
-            <button id="btnGuardar" type="submit" class="btn btn-primary">Submit</button>
-            <button id="btnLimpiar" type="button" class="btn btn-secondary">Limpiar</button>
-        </div>
-        <div class="col-lg-6">
 
-            <div class="text-xs-center">
-                <img src="https://dummyimage.com/300" class="rounded" alt="Imagen PRINCIPAL">
-            </div>
-            <br/>
-            <div class="form-group">
-                <label for="exampleInputFile">File input</label>
-                <input type="file" class="form-control-file" id="exampleInputFile" (change)="fileChangeEvent($event)" aria-describedby="fileHelp">
-                <!--<small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>-->
-                <button type="button" (click)="upload()">Upload</button>
-            </div>
-            <br/>
-            <ul class="list-inline text-xs-center">
-                <li class="list-inline-item">
-                    <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                    <button type="button" class="close img-close" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </li>
-                <li class="list-inline-item">
-                    <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                </li>
-                <li class="list-inline-item">
-                    <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                </li>
-                <li class="list-inline-item">
-                    <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                </li>
-                <li class="list-inline-item">
-                    <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                </li>
-            </ul>
-            <!--
-                        <ngb-carousel>
-                            <template ngbSlide>
-                                <img src="https://dummyimage.com/300" alt="Random first slide">
-                                <div class="carousel-caption">
-                                    <h3>First slide label</h3>
-                                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+
+            </template>
+        </ngb-tab>
+        <ngb-tab title="Detalle" id="tab_Detalle">
+            <template ngbTabContent>
+
+
+                <div class="col-lg-6">
+                    <!--
+                                <div class="text-xs-center">
+                                    <img src="https://dummyimage.com/300" class="rounded" alt="Imagen PRINCIPAL">
                                 </div>
-                            </template>
-                            <template ngbSlide>
-                                <img src="https://dummyimage.com/300" alt="Random second slide">
-                                <div class="carousel-caption">
-                                    <h3>Second slide label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                <br/>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">File input</label>
+                                    <input type="file" class="form-control-file" id="exampleInputFile" (change)="fileChangeEvent($event)" aria-describedby="fileHelp">
+                                    <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+                                    <button type="button" (click)="upload()">Upload</button>
                                 </div>
-                            </template>
-                            <template ngbSlide>
-                                <img src="https://dummyimage.com/300" alt="Random third slide">
-                                <div class="carousel-caption">
-                                    <h3>Third slide label</h3>
-                                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                                </div>
-                            </template>
-                        </ngb-carousel>
+                                <br/>
+                                <ul class="list-inline text-xs-center">
+                                    <li class="list-inline-item">
+                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                        <button type="button" class="close img-close" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                    </li>
+                                </ul>
+                                -->
+                    <!--
+                                <ngb-carousel>
+                                    <template ngbSlide>
+                                        <img src="https://dummyimage.com/300" alt="Random first slide">
+                                        <div class="carousel-caption">
+                                            <h3>First slide label</h3>
+                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                        </div>
+                                    </template>
+                                    <template ngbSlide>
+                                        <img src="https://dummyimage.com/300" alt="Random second slide">
+                                        <div class="carousel-caption">
+                                            <h3>Second slide label</h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                        </div>
+                                    </template>
+                                    <template ngbSlide>
+                                        <img src="https://dummyimage.com/300" alt="Random third slide">
+                                        <div class="carousel-caption">
+                                            <h3>Third slide label</h3>
+                                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                        </div>
+                                    </template>
+                                </ngb-carousel>
 
-                        <ngb-carousel>
-                            <template ngbSlide>
-                                <img src="https://dummyimage.com/300" alt="Random first slide">
-                                <div class="carousel-caption">
-                                    <h3>First slide label</h3>
-                                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                </div>
-                            </template>
-                            <template ngbSlide>
-                                <img src="https://dummyimage.com/300" alt="Random second slide">
-                                <div class="carousel-caption">
-                                    <h3>Second slide label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </template>
-                            <template ngbSlide>
-                                <img src="https://dummyimage.com/300" alt="Random third slide">
-                                <div class="carousel-caption">
-                                    <h3>Third slide label</h3>
-                                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                                </div>
-                            </template>
-                        </ngb-carousel>-->
+                                <ngb-carousel>
+                                    <template ngbSlide>
+                                        <img src="https://dummyimage.com/300" alt="Random first slide">
+                                        <div class="carousel-caption">
+                                            <h3>First slide label</h3>
+                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                        </div>
+                                    </template>
+                                    <template ngbSlide>
+                                        <img src="https://dummyimage.com/300" alt="Random second slide">
+                                        <div class="carousel-caption">
+                                            <h3>Second slide label</h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                        </div>
+                                    </template>
+                                    <template ngbSlide>
+                                        <img src="https://dummyimage.com/300" alt="Random third slide">
+                                        <div class="carousel-caption">
+                                            <h3>Third slide label</h3>
+                                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                        </div>
+                                    </template>
+                                </ngb-carousel>-->
 
-        </div>
-    </div>
-    <br/>
-    <h3>Listado de Productos</h3>
-
-
-    <div class="form-group row">
-
-        <label for="filt_descripcion" class="col-lg-1">Buscar: </label>
-
-        <div class="col-lg-5">
-            <input type="text" class="form-control" id="filt_descripcion">
-        </div>
-
-        <label for="filt_categoria" class="col-lg-1">Categoria: </label>
-
-        <div class="col-lg-3">
-            <select id="filt_categoria" class="form-control">
-
-                <option value="0">--seleccione--</option>
-                <option value="1">Categoria 01</option>
-                <option value="2">Categoria 02</option>
-                <option value="3">Categoria 03</option>
-            </select>
-        </div>
-
-        <div class="col-lg-2">
-            <button type="button" class="btn btn-primary" id="btnBuscar">Buscar</button>
-        </div>
-
-    </div>
-
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th width="5%">#</th>
-            <th>Nombre</th>
-            <th>Descripcion</th>
-            <th width="10%">Opciones</th>
-        </tr>
-        </thead>
-        <tbody>
+                </div>
 
 
-        <tr>
-            <td scope="row">1</td>
-            <td>Producto 01</td>
-            <td>Descripcion 01</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td scope="row">2</td>
-            <td>Producto 02</td>
-            <td>Descripcion 02</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td scope="row">3</td>
-            <td>Producto 03</td>
-            <td>Descripcion 03</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td scope="row">4</td>
-            <td>Producto 04</td>
-            <td>Descripcion 04</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td scope="row">5</td>
-            <td>Producto 05</td>
-            <td>Descripcion 05</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td scope="row">6</td>
-            <td>Producto 06</td>
-            <td>Descripcion 06</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td scope="row">7</td>
-            <td>Producto 07</td>
-            <td>Descripcion 07</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td scope="row">8</td>
-            <td>Producto 08</td>
-            <td>Descripcion 08</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td scope="row">9</td>
-            <td>Producto 09</td>
-            <td>Descripcion 09</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td scope="row">10</td>
-            <td>Producto 10</td>
-            <td>Descripcion 10</td>
-            <td>
-                <a>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </a>
-                <a>
-                    <i class="fa fa-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-
-
-        </tbody>
-    </table>
-
-    <ul class="pagination mx-auto">
-        <li class="page-item">
-            <a class="page-link">
-                <i class="fa fa-angle-left" aria-hidden="true"></i>
-                <i class="fa fa-angle-left" aria-hidden="true"></i>
-            </a>
-        </li>
-        <li class="page-item">
-            <a class="page-link">
-                <i class="fa fa-angle-left" aria-hidden="true"></i>
-            </a>
-        </li>
-
-        <li class="page-item">
-            <a class="page-link">
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </a>
-        </li>
-        <li class="page-item">
-            <a class="page-link">
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-
+            </template>
+        </ngb-tab>
+    </ngb-tabset>
 
 </div>

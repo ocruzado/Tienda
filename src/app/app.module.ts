@@ -8,6 +8,7 @@ import {AppComponent} from './app.component';
 import {ProductoFormComponent} from './producto/productoForm.component';
 import {DashBoardComponent} from "./dashboard.component";
 import {ProductoComponent} from "./producto.component";
+import {CategoriaComponent} from "./categoria.component";
 
 // TinyMCE
 import {SimpleTinyComponent} from './TinyMCE.component';
@@ -25,6 +26,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         //ProductoFormComponent,
         DashBoardComponent,
         ProductoComponent,
+        CategoriaComponent,
 
         SimpleTinyComponent
     ],

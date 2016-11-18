@@ -36,7 +36,7 @@ export class ProductoFormComponent implements OnInit {
     }
 
     onSubmit(): void {
-        this.productoservice.addProducto(this.producto)
+        this.productoservice.add(this.producto)
             .subscribe(r=> this.producto.prod_Nombre = r);
     }
 
@@ -55,14 +55,17 @@ export class ProductoFormComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+/*
         this.listar();
 
-        this.categoriaservice.getCategorias()
+        this.categoriaservice.getList('%')
             .subscribe(r=> {
-                this.categorias = r;
-            });
+                //this.categorias = r;
 
+                //this.productos = r.items;
+                this.categorias = r.items;
+            });
+*/
     }
 
     getHtmlContent(e): void {
@@ -87,8 +90,8 @@ export class ProductoFormComponent implements OnInit {
 
         this.productos = [];
         this.TotalItems = 0;
-
-        this.productoservice.getProductos(this.filt_descripcion, this.filt_categoria.cate_IdCategoria.toString())
+/*
+        this.productoservice.getList(this.filt_descripcion, this.filt_categoria.cate_IdCategoria.toString())
             .subscribe(r=> {
                 this.productos = r.items;
                 this.TotalItems = r.total;
@@ -99,6 +102,7 @@ export class ProductoFormComponent implements OnInit {
 
                 this.setPage(1);
             });
+            */
     }
 
     editar(id: number): void {
@@ -107,10 +111,10 @@ export class ProductoFormComponent implements OnInit {
 
     editar_estado(id: number, estado: number): void {
         let usuario = 'usuario';
-
+/*
         this.productoservice
-            .editar_estado(id, estado, usuario)
-            .subscribe(r=>this.listar());
+            .edit_estado(id, estado)
+            .subscribe(r=>this.listar());*/
     }
 
 

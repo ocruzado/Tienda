@@ -18,11 +18,14 @@ export class ProductoService {
 
     }
 
-    getProductos(nombre: string, categoria: string): Observable<G_Lista<Producto>> {
+    getList(nombre: string, categoria: string, PageNumber: number, PageSize: number): Observable<G_Lista<Producto>> {
 
         let params = new URLSearchParams();
         params.set('nombre', nombre);
         params.set('categoria', categoria);
+
+        params.set('PageNumber', PageNumber.toString());
+        params.set('PageSize', PageSize.toString());
 
         return this.http.get(this.Url, {search: params})
             .map(r=> r.json())
@@ -30,25 +33,17 @@ export class ProductoService {
 
     }
 
-    editar_estado(id: number, estado: number, usuario: string): Observable<string> {
+    get(id: number): Observable<Producto> {
 
-        let data = {
-            id: id,
-            estado: estado,
-            usuario: usuario
-        }
+        let params = new URLSearchParams();
+        params.set('id', id.toString());
 
-        let body = JSON.stringify(data);
-        let options = new RequestOptions({headers: this.headers});
-
-        return this.http.post(this.Url + '/editar_estado', body, options)
-            .map(r=> r.text())
+        return this.http.get(this.Url + '/get', {search: params})
+            .map(r=> r.json())
             .catch(this.handleError);
-
-        //return respuesta;
     }
 
-    addProducto(producto: Producto): Observable<string> {
+    add(producto: Producto): Observable<string> {
         console.log(JSON.stringify(producto));
 
         let body = JSON.stringify(producto);
@@ -59,6 +54,45 @@ export class ProductoService {
             .catch(this.handleError);
 
         return respues;
+    }
+
+    edit(producto: Producto): Observable<string> {
+
+        let body = JSON.stringify(producto);
+        let options = new RequestOptions({headers: this.headers});
+
+        return this.http.post(this.Url + '/edit', body, options)
+            .map(r=> r.text())
+            .catch(this.handleError);
+    }
+
+    remove(id: number): Observable<string> {
+
+        let data = {
+            id: id
+        }
+
+        let body = JSON.stringify(data);
+        let options = new RequestOptions({headers: this.headers});
+
+        return this.http.post(this.Url + '/remove', body, options)
+            .map(r=> r.text())
+            .catch(this.handleError);
+    }
+
+    edit_estado(id: number, estado: boolean): Observable<string> {
+
+        let data = {
+            id: id,
+            estado: estado
+        }
+
+        let body = JSON.stringify(data);
+        let options = new RequestOptions({headers: this.headers});
+
+        return this.http.post(this.Url + '/state', body, options)
+            .map(r=> r.text())
+            .catch(this.handleError);
     }
 
 

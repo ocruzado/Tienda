@@ -1,5 +1,6 @@
 //import {Router} from '@angular/router';
 import {Component} from '@angular/core';
+import {Producto}from './model/producto';
 
 @Component({
     selector: 'app-dashboard',
@@ -15,7 +16,7 @@ export class DashBoardComponent {
         this.filesToUpload = [];
     }
 
-    upload():void {
+    upload(): void {
         this.makeFileRequest("http://localhost:8000/upload", [], this.filesToUpload).then((result) => {
             console.log(result);
         }, (error) => {
@@ -23,7 +24,7 @@ export class DashBoardComponent {
         });
     }
 
-    fileChangeEvent(fileInput: any):void {
+    fileChangeEvent(fileInput: any): void {
         this.filesToUpload = <Array<File>> fileInput.target.files;
     }
 
@@ -31,9 +32,13 @@ export class DashBoardComponent {
         return new Promise((resolve, reject) => {
             var formData: any = new FormData();
             var xhr = new XMLHttpRequest();
+
+
+
             for (var i = 0; i < files.length; i++) {
                 formData.append("uploads[]", files[i], files[i].name);
             }
+
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
@@ -42,7 +47,8 @@ export class DashBoardComponent {
                         reject(xhr.response);
                     }
                 }
-            }
+            };
+
             xhr.open("POST", url, true);
             xhr.send(formData);
         });

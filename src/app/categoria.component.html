@@ -1,0 +1,92 @@
+<div class="container">
+    <h2>Categoria</h2>
+
+    <div class="row">
+        <div class="col-lg-4">
+
+            <div class="form-group">
+                <label for="cate_Nombre">Nombre: </label>
+
+                <input #Prod_Nombre id="cate_Nombre" [(ngModel)]="categoria.cate_Nombre" type="text"
+                       class="form-control"
+                       placeholder="Nombre del Categoria">
+            </div>
+
+            <div class="form-group">
+                <label for="cate_Descripcion">Descripcion: </label>
+
+                <textarea #prod_Descripcion id="cate_Descripcion" [(ngModel)]="categoria.cate_Descripcion"
+                          class="form-control" placeholder="Descripcion de Categoria" rows="3"></textarea>
+            </div>
+
+            <div class="form-group row">
+                <label for="FlagActivo" class="col-sm-2">Estado: </label>
+
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input #FlagActivo id="FlagActivo" [(ngModel)]="categoria.FlagActivo"
+                                   type="checkbox" class="form-check-input">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <button id="btnGuardar" type="submit" class="btn btn-primary" (click)="registrar()">Registrar</button>
+            <button id="btnLimpiar" type="button" class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+        </div>
+        <div class="col-lg-8">
+
+             <div class="form-group row">
+
+                <label for="filt_descripcion" class="col-lg-2">Buscar: </label>
+
+                <div class="col-lg-8">
+                    <input type="text" class="form-control" id="filt_descripcion" name="filt_descripcion"
+                           [(ngModel)]="filt_descripcion">
+                </div>
+
+                <div class="col-lg-2">
+                    <button type="button" class="btn btn-primary" id="btnBuscar"
+                            (click)="setPage(1)">Buscar
+                    </button>
+                </div>
+
+            </div>
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th width="5%">#</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th width="10%">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of List; let i=index">
+                    <td scope="row">{{ (PageNumber - 1) * PageSize + i +1}}</td>
+                    <td>{{item.cate_Codigo}}</td>
+                    <td>{{item.cate_Nombre}}</td>
+                    <td>
+                        <a (click)="editar(item.cate_IdCategoria)">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </a>
+                        <a (click)="eliminar(item.cate_IdCategoria)">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                        <a *ngIf="!item.FlagActivo" (click)="editar_estado(item.cate_IdCategoria, true)">
+                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                        </a>
+                        <a *ngIf="item.FlagActivo" (click)="editar_estado(item.cate_IdCategoria, false)">
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <ngb-pagination (pageChange)="setPage($event)" [collectionSize]="TotalItems" [(page)]="PageNumber" [(pageSize)]="PageSize"></ngb-pagination>
+
+        </div>
+    </div>
+</div>

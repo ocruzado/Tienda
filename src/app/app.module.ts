@@ -3,9 +3,10 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 
-//APP - Component's
+//APP - COMPONENT'S
 import {AppComponent} from './app.component';
-import {ProductoFormComponent} from './producto/productoForm.component';
+
+
 import {DashBoardComponent} from "./dashboard.component";
 import {ProductoComponent} from "./producto.component";
 import {CategoriaComponent} from "./categoria.component";
@@ -13,7 +14,7 @@ import {CategoriaComponent} from "./categoria.component";
 // TinyMCE
 import {SimpleTinyComponent} from './TinyMCE.component';
 
-//Service's
+//SERVICE
 import {ProductoService} from './Services/producto.service';
 import {CategoriaService} from "./Services/categoria.service";
 import {ImagenService} from "./Services/imagen.service";
@@ -24,7 +25,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
     declarations: [
         AppComponent,
-        //ProductoFormComponent,
         DashBoardComponent,
         ProductoComponent,
         CategoriaComponent,

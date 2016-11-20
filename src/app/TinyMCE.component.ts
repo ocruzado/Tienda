@@ -9,10 +9,11 @@ import {
 
 @Component({
     selector: 'simple-tiny',
-    template: `<textarea id="{{elementId}}"></textarea>`
+    template: `<textarea id="{{elementId}}">{{content_html}}</textarea>`
 })
 export class SimpleTinyComponent implements AfterViewInit, OnDestroy {
     @Input() elementId: String;
+    @Input() content_html: String;
     @Output() onEditorKeyup = new EventEmitter<any>();
 
     editor;

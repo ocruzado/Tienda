@@ -11,11 +11,12 @@ export class Producto {
     FlagActivo: boolean;
 
     constructor() {
+        this.prod_IdProducto = 0;
         this.cate_IdCategoria = 0;
-        this.prod_Codigo = "";
-        this.prod_Nombre = "";
-        this.prod_Descripcion = "";
-        this.prod_Detalle = "";
+        this.prod_Codigo = '';
+        this.prod_Nombre = '';
+        this.prod_Descripcion = '';
+        this.prod_Detalle = '';
         this.prod_Precio = 0;
 
         this.prod_Tags = '';

@@ -33,8 +33,6 @@ export class DashBoardComponent {
             var formData: any = new FormData();
             var xhr = new XMLHttpRequest();
 
-
-
             for (var i = 0; i < files.length; i++) {
                 formData.append("uploads[]", files[i], files[i].name);
             }

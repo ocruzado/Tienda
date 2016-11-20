@@ -95,6 +95,55 @@ export class ProductoService {
             .catch(this.handleError);
     }
 
+    edit_html(producto: Producto): Observable<string> {
+
+        let body = JSON.stringify(producto);
+        let options = new RequestOptions({headers: this.headers});
+
+        return this.http.post(this.Url + '/edit_html', body, options)
+            .map(r=> r.text())
+            .catch(this.handleError);
+    }
+
+    /*
+     add_file(producto: Producto, files: Array<File>) {
+
+     //let body = JSON.stringify(producto);
+     //let options = new RequestOptions({headers: this.headers});
+
+     / *return this.http.post(this.Url + '/edit_html', body, options)
+     .map(r=> r.text())
+     .catch(this.handleError);
+     * /
+
+     return new Promise((resolve, reject) => {
+     var formData: any = new FormData();
+     var xhr = new XMLHttpRequest();
+
+
+     //let body = JSON.stringify(this.producto);
+
+     formData.append('prod_IdProducto', producto.prod_IdProducto);
+
+     for (var i = 0; i < files.length; i++) {
+     formData.append("ImageFile", files[i], files[i].name);
+     }
+
+     xhr.onreadystatechange = function () {
+     if (xhr.readyState == 4) {
+     if (xhr.status == 200) {
+     resolve(JSON.parse(xhr.response));
+     } else {
+     reject(xhr.response);
+     }
+     }
+     }
+     xhr.open("POST", this.Url + '/upload_file', true);
+     xhr.send(formData);
+     });
+     }
+     */
+
 
     private handleError(error: any) {
         let errMsg = (error.message) ? error.message : '';

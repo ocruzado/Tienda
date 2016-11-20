@@ -2,7 +2,8 @@
     <h2>Producto</h2>
 
 
-    <ngb-tabset #tab_Master="ngbTabset">
+    <!--<ngb-tabset #tab_Master="ngbTabset" id="tab_Master">-->
+    <ngb-tabset id="tab_Master">
         <ngb-tab title="Datos Básicos" id="tab_Listado">
             <template ngbTabContent>
 
@@ -137,7 +138,7 @@
                                     <a *ngIf="item.FlagActivo" (click)="editar_estado(item.prod_IdProducto, false)">
                                         <i class="fa fa-check-square-o" aria-hidden="true"></i>
                                     </a>
-                                    <a>
+                                    <a (click)="editar_Detalle(item.prod_IdProducto)">
                                         <i class="fa fa-file-code-o" aria-hidden="true"></i>
                                     </a>
                                 </td>
@@ -157,92 +158,155 @@
         <ngb-tab title="Detalle" id="tab_Detalle">
             <template ngbTabContent>
 
+                <button id="btnGuardar_html" type="submit" class="btn btn-primary" (click)="registro_Detalle()">
+                    Registrar
+                </button>
+                <button id="btnCancelar_html" type="button" class="btn btn-secondary" (click)="limpiar_html()">Limpiar
+                </button>
 
-                <div class="col-lg-6">
-                    <!--
-                                <div class="text-xs-center">
-                                    <img src="https://dummyimage.com/300" class="rounded" alt="Imagen PRINCIPAL">
-                                </div>
-                                <br/>
-                                <div class="form-group">
-                                    <label for="exampleInputFile">File input</label>
-                                    <input type="file" class="form-control-file" id="exampleInputFile" (change)="fileChangeEvent($event)" aria-describedby="fileHelp">
-                                    <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
-                                    <button type="button" (click)="upload()">Upload</button>
-                                </div>
-                                <br/>
-                                <ul class="list-inline text-xs-center">
-                                    <li class="list-inline-item">
-                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                                        <button type="button" class="close img-close" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
-                                    </li>
-                                </ul>
-                                -->
-                    <!--
-                                <ngb-carousel>
-                                    <template ngbSlide>
-                                        <img src="https://dummyimage.com/300" alt="Random first slide">
-                                        <div class="carousel-caption">
-                                            <h3>First slide label</h3>
-                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                        </div>
-                                    </template>
-                                    <template ngbSlide>
-                                        <img src="https://dummyimage.com/300" alt="Random second slide">
-                                        <div class="carousel-caption">
-                                            <h3>Second slide label</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        </div>
-                                    </template>
-                                    <template ngbSlide>
-                                        <img src="https://dummyimage.com/300" alt="Random third slide">
-                                        <div class="carousel-caption">
-                                            <h3>Third slide label</h3>
-                                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                                        </div>
-                                    </template>
-                                </ngb-carousel>
+                <div class="form-group">
+                    <label for="inp_File">Agregar Imagen: </label>
+                    <input type="file" class="form-control-file" id="inp_File" (change)="fileChangeEvent($event)"
+                           aria-describedby="fileHelp">
 
-                                <ngb-carousel>
-                                    <template ngbSlide>
-                                        <img src="https://dummyimage.com/300" alt="Random first slide">
-                                        <div class="carousel-caption">
-                                            <h3>First slide label</h3>
-                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                        </div>
-                                    </template>
-                                    <template ngbSlide>
-                                        <img src="https://dummyimage.com/300" alt="Random second slide">
-                                        <div class="carousel-caption">
-                                            <h3>Second slide label</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        </div>
-                                    </template>
-                                    <template ngbSlide>
-                                        <img src="https://dummyimage.com/300" alt="Random third slide">
-                                        <div class="carousel-caption">
-                                            <h3>Third slide label</h3>
-                                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                                        </div>
-                                    </template>
-                                </ngb-carousel>-->
+                    <!--<button type="button" (click)="upload()">Upload</button>-->
 
+                    <a (click)="add_file()">
+                        <i class="fa fa-upload" aria-hidden="true"></i>
+                    </a>
                 </div>
 
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="text-xs-center">
+                            <img src="http://placehold.it/300" class="rounded" alt="Imagen PRINCIPAL">
+                        </div>
+                        <br/>
+                        <ul class="list-inline text-xs-center">
+
+                            <li *ngFor="let item of List_Imagenes; let i=index" class="list-inline-item">
+
+                                <img src="{{Base_Url_PublicFolder + item.imag_ArchivoNombre}}" class="img-thumbnail"/>
+                                <!--
+                                <p>{{item.imag_IdImagen}}</p>
+                                 <p>{{item.imag_ArchivoNombreOriginal}}</p>
+                                 <p>{{item.imag_ArchivoExtension}}</p>-->
+                            </li>
+                            <!--
+                            <li class="list-inline-item">
+                                <img src="http://placehold.it/100" class="img-thumbnail" alt="Imagen en lista">
+                            </li>
+                            <li class="list-inline-item">
+                                <img src="http://placehold.it/100" class="img-thumbnail" alt="Imagen en lista">
+                            </li>
+                            <li class="list-inline-item">
+                                <img src="http://placehold.it/100" class="img-thumbnail" alt="Imagen en lista">
+                            </li>
+                            -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+
+
+                    <div class="col-lg-6">
+
+
+                        <simple-tiny [elementId]="'html_prod_Detalle'" [content_html]="producto.prod_Detalle"
+                                     (onEditorKeyup)="getHtmlContent($event)"></simple-tiny>
+                        <!--
+                                  <div class="text-xs-center">
+                                      <img src="https://dummyimage.com/300" class="rounded" alt="Imagen PRINCIPAL">
+                                  </div>
+                                  <br/>
+                                  <div class="form-group">
+                                      <label for="exampleInputFile">File input</label>
+                                      <input type="file" class="form-control-file" id="exampleInputFile" (change)="fileChangeEvent($event)" aria-describedby="fileHelp">
+                                      <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+                                      <button type="button" (click)="upload()">Upload</button>
+                                  </div>
+                                  <br/>
+                                  <ul class="list-inline text-xs-center">
+                                      <li class="list-inline-item">
+                                          <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                          <button type="button" class="close img-close" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                          </button>
+                                      </li>
+                                      <li class="list-inline-item">
+                                          <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                      </li>
+                                      <li class="list-inline-item">
+                                          <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                      </li>
+                                      <li class="list-inline-item">
+                                          <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                      </li>
+                                      <li class="list-inline-item">
+                                          <img src="https://dummyimage.com/100" class="img-thumbnail" alt="Imagen en lista">
+                                      </li>
+                                  </ul>
+                                  -->
+                        <!--
+                                    <ngb-carousel>
+                                        <template ngbSlide>
+                                            <img src="https://dummyimage.com/300" alt="Random first slide">
+                                            <div class="carousel-caption">
+                                                <h3>First slide label</h3>
+                                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                            </div>
+                                        </template>
+                                        <template ngbSlide>
+                                            <img src="https://dummyimage.com/300" alt="Random second slide">
+                                            <div class="carousel-caption">
+                                                <h3>Second slide label</h3>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                            </div>
+                                        </template>
+                                        <template ngbSlide>
+                                            <img src="https://dummyimage.com/300" alt="Random third slide">
+                                            <div class="carousel-caption">
+                                                <h3>Third slide label</h3>
+                                                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                            </div>
+                                        </template>
+                                    </ngb-carousel>
+
+                                    <ngb-carousel>
+                                        <template ngbSlide>
+                                            <img src="https://dummyimage.com/300" alt="Random first slide">
+                                            <div class="carousel-caption">
+                                                <h3>First slide label</h3>
+                                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                            </div>
+                                        </template>
+                                        <template ngbSlide>
+                                            <img src="https://dummyimage.com/300" alt="Random second slide">
+                                            <div class="carousel-caption">
+                                                <h3>Second slide label</h3>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                            </div>
+                                        </template>
+                                        <template ngbSlide>
+                                            <img src="https://dummyimage.com/300" alt="Random third slide">
+                                            <div class="carousel-caption">
+                                                <h3>Third slide label</h3>
+                                                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                            </div>
+                                        </template>
+                                    </ngb-carousel>-->
+
+                    </div>
+                    <div class="col-lg-6">
+                        {{producto.prod_Detalle}}
+
+                        <br/>
+
+                        <div [innerHTML]="producto.prod_Detalle">
+                        </div>
+                    </div>
+                </div>
 
             </template>
         </ngb-tab>

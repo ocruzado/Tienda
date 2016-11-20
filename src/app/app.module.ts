@@ -16,6 +16,7 @@ import {SimpleTinyComponent} from './TinyMCE.component';
 //Service's
 import {ProductoService} from './Services/producto.service';
 import {CategoriaService} from "./Services/categoria.service";
+import {ImagenService} from "./Services/imagen.service";
 
 import {routing} from './app.routing';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -40,7 +41,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ],
     providers: [
         ProductoService,
-        CategoriaService
+        CategoriaService,
+        ImagenService
     ],
     bootstrap: [AppComponent]
 })

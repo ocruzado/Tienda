@@ -1,12 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
 
-import {Categoria}from './model/categoria';
+//import {Categoria}from './model/categoria';
 import {Producto} from './model/producto';
+import {Imagen} from './model/imagen';
+
 import {ProductoService} from "./Services/producto.service";
 import {CategoriaService} from "./Services/categoria.service";
+import {ImagenService} from "./Services/imagen.service";
 
 import {G_ListaDesplegable} from './generic/g_lista_desplegable';
+import {TipoImagen} from './enum/enum';
 
 @Component({
     selector: 'producto',
@@ -24,9 +28,10 @@ import {G_ListaDesplegable} from './generic/g_lista_desplegable';
 
 export class ProductoComponent implements OnInit {
     private Url: string = environment.Base_Url_Service;  // URL to web api
+    private Base_Url_PublicFolder: string = environment.Base_Url_PublicFolder;  // URL to web api
 
     producto: Producto = new Producto();
-    //filesToUpload: Array<File>; //FILE-UPLOAD
+    filesToUpload: Array<File>; //FILE-UPLOAD
 
     //INPUT
     filt_descripcion: string = "";
@@ -39,8 +44,11 @@ export class ProductoComponent implements OnInit {
     PageNumber: number = 1;
     TotalItems: number = 0;
 
+    List_Imagenes: Imagen[] = [];
+
     constructor(private productoservice: ProductoService,
-                private categoriaservice: CategoriaService) {
+                private categoriaservice: CategoriaService,
+                private imagenservice: ImagenService) {
         //this.filesToUpload = []; //FILE-UPLOAD
     }
 
@@ -129,20 +137,74 @@ export class ProductoComponent implements OnInit {
 
     // OPERACIONES - FIN
 
+    // HTML_EDITOR - INICIO
+
+    //htmlcontent: string = "fffff";
+
+    getHtmlContent(e): void {
+        //this.htmlcontent = e;
+        this.producto.prod_Detalle = e;
+    }
+
+    editar_Detalle(id: number): void {
+
+        //this.producto.prod_Detalle = 'mi contenido HTML';
+        //tinymce.get('html_prod_Detalle').setContent();
+        //tab_Master.select('tab_Detalle');
+
+        this.productoservice
+            .get(id)
+            .subscribe(r=> {
+                this.producto.prod_IdProducto = r.prod_IdProducto;
+                this.producto.prod_Detalle = r.prod_Detalle;
+            });
+
+        this.imagenservice.getList(TipoImagen.Producto, id)
+            .subscribe(r=> {
+                this.List_Imagenes = r;
+            })
+    }
+
+    registro_Detalle(): void {
+
+        this.productoservice.edit_html(this.producto)
+            .subscribe(()=> {
+                this.limpiar();
+                this.setPage(1);
+            });
+
+    }
+
+    limpiar_html(): void {
+        this.tags = [];
+        this.producto = new Producto();
+    }
+
+    // HTML_EDITOR - FIN
+
+
     //FILE-UPLOAD - Inicio
-    /* upload(): void {
-     //this.makeFileRequest("http://localhost:8000/upload", [], this.filesToUpload).then((result) => {
-     this.makeFileRequest(this.Url + "/upload", [], this.filesToUpload).then((result) => {
-     console.log(result);
-     }, (error) => {
-     console.error(error);
-     });
-     }
+    add_file(): void {
+        //this.makeFileRequest("http://localhost:8000/upload", [], this.filesToUpload).then((result) => {
+        /*
+         this.makeFileRequest(this.Url + "/upload", [], this.filesToUpload)
+         .then((result) => {
+         console.log(result);
+         }, (error) => {
+         console.error(error);
+         });*/
+        if (this.producto.prod_IdProducto != 0) {
+            this.imagenservice.add(TipoImagen.Producto, this.producto.prod_IdProducto, this.filesToUpload);
+        }
 
-     fileChangeEvent(fileInput: any): void {
-     this.filesToUpload = <Array<File>> fileInput.target.files;
-     }
 
+    }
+
+    fileChangeEvent(fileInput: any): void {
+        this.filesToUpload = <Array<File>> fileInput.target.files;
+    }
+
+    /*
      private makeFileRequest(url: string, params: Array<string>, files: Array<File>) {
      return new Promise((resolve, reject) => {
      var formData: any = new FormData();

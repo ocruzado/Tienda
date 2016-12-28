@@ -26,7 +26,20 @@ export class CategoriaService {
         params.set('PageNumber', PageNumber.toString());
         params.set('PageSize', PageSize.toString());
 
-        return this.http.get(this.Url, {search: params})
+       // this.headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+
+        /*
+        let headers3 = new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        });
+        let options = new RequestOptions({headers: headers3, search: params});
+        */
+
+        let headers = new Headers({ 'Authorization': 'Bearer ' + localStorage.getItem('token')});
+        let options = new RequestOptions({ headers: headers, search: params });
+
+        //return this.http.get(this.Url, {search: params})
+        return this.http.get(this.Url, options)
             .map(r=> r.json())
             .catch(this.handleError);
     }
@@ -95,9 +108,23 @@ export class CategoriaService {
 
 
     getCategoria(): Observable<G_ListaDesplegable[]> {
+
+
+        //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('token')});
+        //let options = new RequestOptions({headers: headers});
+
+
+        //this.headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        //let options = new RequestOptions({headers: this.headers});
+
         return this.http.get(this.Url + '/getCategoria')
             .map(r=> r.json())
             .catch(this.handleError);
+
+
+        /*return this.http.get(this.Url + '/getCategoria')
+         .map(r=> r.json())
+         .catch(this.handleError);*/
     }
 
     private handleError(error: any) {
@@ -106,3 +133,4 @@ export class CategoriaService {
         return Observable.throw(errMsg);
     }
 }
+

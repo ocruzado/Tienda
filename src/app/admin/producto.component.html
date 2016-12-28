@@ -1,7 +1,6 @@
 <div class="container">
     <h2>Producto</h2>
 
-
     <!--<ngb-tabset #tab_Master="ngbTabset" id="tab_Master">-->
     <ngb-tabset id="tab_Master">
         <ngb-tab title="Datos Básicos" id="tab_Listado">
@@ -14,8 +13,7 @@
                             <label for="Prod_Nombre">Nombre: </label>
 
                             <input #Prod_Nombre id="Prod_Nombre" [(ngModel)]="producto.prod_Nombre" type="text"
-                                   class="form-control"
-                                   placeholder="Nombre del Producto">
+                                   class="form-control" placeholder="Nombre del Producto">
                         </div>
 
                         <div class="form-group">
@@ -169,8 +167,6 @@
                     <input type="file" class="form-control-file" id="inp_File" (change)="fileChangeEvent($event)"
                            aria-describedby="fileHelp">
 
-                    <!--<button type="button" (click)="upload()">Upload</button>-->
-
                     <a (click)="add_file()">
                         <i class="fa fa-upload" aria-hidden="true"></i>
                     </a>
@@ -192,17 +188,6 @@
                                  <p>{{item.imag_ArchivoNombreOriginal}}</p>
                                  <p>{{item.imag_ArchivoExtension}}</p>-->
                             </li>
-                            <!--
-                            <li class="list-inline-item">
-                                <img src="http://placehold.it/100" class="img-thumbnail" alt="Imagen en lista">
-                            </li>
-                            <li class="list-inline-item">
-                                <img src="http://placehold.it/100" class="img-thumbnail" alt="Imagen en lista">
-                            </li>
-                            <li class="list-inline-item">
-                                <img src="http://placehold.it/100" class="img-thumbnail" alt="Imagen en lista">
-                            </li>
-                            -->
                         </ul>
                     </div>
                 </div>

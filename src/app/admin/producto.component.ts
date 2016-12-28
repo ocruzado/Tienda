@@ -1,29 +1,20 @@
 import {Component, OnInit} from '@angular/core';
-import {environment} from '../environments/environment';
+import {environment} from '../../environments/environment';
 
 //import {Categoria}from './model/categoria';
-import {Producto} from './model/producto';
-import {Imagen} from './model/imagen';
+import {Producto} from '../model/producto';
+import {Imagen} from '../model/imagen';
 
-import {ProductoService} from "./Services/producto.service";
-import {CategoriaService} from "./Services/categoria.service";
-import {ImagenService} from "./Services/imagen.service";
+import {ProductoService} from "../Services/producto.service";
+import {CategoriaService} from "../Services/categoria.service";
+import {ImagenService} from "../Services/imagen.service";
 
-import {G_ListaDesplegable} from './generic/g_lista_desplegable';
-import {TipoImagen} from './enum/enum';
+import {G_ListaDesplegable} from '../generic/g_lista_desplegable';
+import {TipoImagen} from '../enum/enum';
 
 @Component({
     selector: 'producto',
-    templateUrl: './producto.component.html'
-    /*styles: [`
-     .img-close {
-     position:absolute;
-     bottom:10px;
-     right:10px;
-     width:100px;
-     height:30px;
-     }
-     `]*/
+    templateUrl: 'producto.component.html'
 })
 
 export class ProductoComponent implements OnInit {
@@ -49,7 +40,7 @@ export class ProductoComponent implements OnInit {
     constructor(private productoservice: ProductoService,
                 private categoriaservice: CategoriaService,
                 private imagenservice: ImagenService) {
-        //this.filesToUpload = []; //FILE-UPLOAD
+        this.filesToUpload = []; //FILE-UPLOAD
     }
 
     ngOnInit(): void {
@@ -65,26 +56,13 @@ export class ProductoComponent implements OnInit {
 
     setPage(PageNumber: number): void {
 
-        //if (PageNumber < 1 || PageNumber > this.TotalPages) {
-        //    return;
-        //}
-
         this.PageNumber = PageNumber;
-
-        //this.Page = this.List.slice(((this.PageNumber - 1) * this.PageSize), (this.PageNumber * this.PageSize));
 
         this.productoservice.getList(this.filt_descripcion, this.filt_categoria.Id, this.PageNumber, this.PageSize)
             .subscribe(r=> {
                 this.List = r.items;
                 this.TotalItems = r.total;
-
-                //for (var i = 1; i <= this.TotalPages; i++) {
-                //    this.Paginas.push(i);
-                //}
-
-                // this.setPage(1);
             });
-
     }
 
     // OPERACIONES - INICIO
@@ -134,23 +112,14 @@ export class ProductoComponent implements OnInit {
         this.tags = [];
         this.producto = new Producto();
     }
-
     // OPERACIONES - FIN
 
     // HTML_EDITOR - INICIO
-
-    //htmlcontent: string = "fffff";
-
     getHtmlContent(e): void {
-        //this.htmlcontent = e;
         this.producto.prod_Detalle = e;
     }
 
     editar_Detalle(id: number): void {
-
-        //this.producto.prod_Detalle = 'mi contenido HTML';
-        //tinymce.get('html_prod_Detalle').setContent();
-        //tab_Master.select('tab_Detalle');
 
         this.productoservice
             .get(id)
@@ -166,7 +135,6 @@ export class ProductoComponent implements OnInit {
     }
 
     registro_Detalle(): void {
-
         this.productoservice.edit_html(this.producto)
             .subscribe(()=> {
                 this.limpiar();
@@ -179,60 +147,18 @@ export class ProductoComponent implements OnInit {
         this.tags = [];
         this.producto = new Producto();
     }
-
     // HTML_EDITOR - FIN
-
 
     //FILE-UPLOAD - Inicio
     add_file(): void {
-        //this.makeFileRequest("http://localhost:8000/upload", [], this.filesToUpload).then((result) => {
-        /*
-         this.makeFileRequest(this.Url + "/upload", [], this.filesToUpload)
-         .then((result) => {
-         console.log(result);
-         }, (error) => {
-         console.error(error);
-         });*/
         if (this.producto.prod_IdProducto != 0) {
             this.imagenservice.add(TipoImagen.Producto, this.producto.prod_IdProducto, this.filesToUpload);
         }
-
-
     }
 
     fileChangeEvent(fileInput: any): void {
         this.filesToUpload = <Array<File>> fileInput.target.files;
     }
-
-    /*
-     private makeFileRequest(url: string, params: Array<string>, files: Array<File>) {
-     return new Promise((resolve, reject) => {
-     var formData: any = new FormData();
-     var xhr = new XMLHttpRequest();
-
-
-     let body = JSON.stringify(this.producto);
-
-     formData.append('data', body);
-
-     for (var i = 0; i < files.length; i++) {
-     formData.append("ImageFile", files[i], files[i].name);
-     }
-
-     xhr.onreadystatechange = function () {
-     if (xhr.readyState == 4) {
-     if (xhr.status == 200) {
-     resolve(JSON.parse(xhr.response));
-     } else {
-     reject(xhr.response);
-     }
-     }
-     }
-     xhr.open("POST", url, true);
-     xhr.send(formData);
-     });
-     }
-     */
     //FILE-UPLOAD - Fin
 
     //SECCION TAG'S - INICIO
@@ -261,7 +187,6 @@ export class ProductoComponent implements OnInit {
     private EliminarTag(index: number) {
         this.tags = this.tags.filter(e => e.id != index);
     }
-
     //SECCION TAG'S - FIN
 }
 

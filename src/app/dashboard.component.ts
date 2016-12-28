@@ -1,6 +1,6 @@
 //import {Router} from '@angular/router';
 import {Component} from '@angular/core';
-import {Producto}from './model/producto';
+//import {Producto}from './model/producto';
 
 @Component({
     selector: 'app-dashboard',
@@ -8,6 +8,8 @@ import {Producto}from './model/producto';
 })
 
 export class DashBoardComponent {
+
+    //cadena: string;
 
     constructor() {
 

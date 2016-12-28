@@ -22,11 +22,8 @@ export class SimpleTinyComponent implements AfterViewInit, OnDestroy {
         tinymce.init({
             selector: '#' + this.elementId,
             plugins: ['link', 'paste', 'table', 'image', 'imagetools', 'code'],
-
             //toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-
-
-            skin_url: 'assets/skins/lightgray',
+            skin_url: '../assets/skins/lightgray',
             setup: editor => {
                 this.editor = editor;
                 editor.on('keyup', () => {
